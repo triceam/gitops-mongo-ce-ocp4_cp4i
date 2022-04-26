@@ -1,0 +1,4 @@
+"name": "mongo-ce"
+"rbac": false
+"saName": "mongodb-kubernetes-operator"
+
