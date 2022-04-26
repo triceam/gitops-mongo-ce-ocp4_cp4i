@@ -1,0 +1,70 @@
+---
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: {{ .Values.serviceName }}
+  labels:
+    {{ include "mongo-ce.labels" . | nindent 4 }}
+spec:
+  members: {{ .Values.replicaset_count }}
+  type: ReplicaSet
+  version: {{ .Values.version }}
+  security:
+    tls:
+      enabled: true
+      certificateKeySecretRef:
+        name: {{ .Values.secretName }}
+      {{- if .Values.caConfigMapName }}
+      caConfigMapRef:
+        name: {{ .Values.caConfigMapName }}
+      {{- end }}
+    authentication:
+      modes: ["SCRAM-SHA-1", "SCRAM-SHA-256"]
+  users:
+    - name: admin
+      db: admin
+      passwordSecretRef:
+        name: {{ .Values.passwordSecretName }}
+      roles:
+        - name: clusterAdmin
+          db: admin
+        - name: userAdminAnyDatabase
+          db: admin
+        - name: dbOwner 
+          db: admin
+        - name: readWriteAnyDatabase
+          db: admin
+      scramCredentialsSecretName: {{ printf "%s-scram" .Values.serviceName }}
+  additionalMongodConfig:
+    storage.wiredTiger.engineConfig.journalCompressor: snappy
+    net.tls.allowInvalidCertificates: true
+    net.tls.allowInvalidHostnames: true
+  statefulSet:
+    spec:
+      serviceName: {{ .Values.serviceName }}
+      selector: {}
+      template:
+        spec:
+          containers:
+          - name: mongod
+            resources:
+              limits:
+                cpu: "1"
+                memory: "1G"
+      volumeClaimTemplates:
+        - metadata:
+            name: data-volume
+          spec:
+            accessModes: [ "ReadWriteOnce" ]
+            storageClassName: {{ .Values.storageClassName }}
+            resources:
+              requests:
+                storage: "20Gi"
+        - metadata:
+            name: logs-volume
+          spec:
+            accessModes: [ "ReadWriteOnce" ]
+            storageClassName: {{ .Values.storageClassName }}
+            resources:
+              requests:
+                storage: "2Gi"

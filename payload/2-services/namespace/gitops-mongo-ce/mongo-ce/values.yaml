@@ -1,0 +1,19 @@
+"caConfigMapName": "mongo-ce-ca"
+"name": "mongo-ce"
+"passwordSecretName": "mongo-ce-password"
+"replicaset_count": "3"
+"secretName": "mongo-ce-tls"
+"service-signed-cert":
+  "caConfigName": "mongo-ce-ca"
+  "job":
+    "autoApproveCsr": true
+  "secretName": "mongo-ce-tls"
+  "serviceAccount":
+    "create": false
+    "name": "mongo-ce-sa"
+    "rbac": false
+  "serviceName": "mongo-ce"
+"serviceName": "mongo-ce"
+"storageClassName": "ibmc-vpc-block-10iops-tier"
+"version": "4.2.6"
+
