@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gitops-mongo-ce
+  annotations:
+    argocd.argoproj.io/sync-wave: "-30"
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: gitops-mongo-ce-operator-group
+  namespace: gitops-mongo-ce
+  annotations:
+    argocd.argoproj.io/sync-wave: "-20"
+spec:
+  targetNamespaces:
+    - gitops-mongo-ce
+---
