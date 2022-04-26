@@ -1,6 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - base/gitops-mongo-ce-mongodb-kubernetes-operator-sa.yaml
   - base/namespace-gitops-mongo-ce.yaml
   - base/openshift-marketplace-ibm-catalogs.yaml
   - base/openshift-marketplace-ibm-entitlement-key.yaml
