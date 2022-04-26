@@ -1,6 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - base/gitops-mongo-ce-mongo-ce-sa-rbac.yaml
   - base/gitops-mongo-ce-mongo-ce-sa-sa.yaml
   - base/gitops-mongo-ce-mongodb-kubernetes-operator-sa.yaml
   - base/gitops-mongo-ce-mongodb-kubernetes-operator-scc.yaml
